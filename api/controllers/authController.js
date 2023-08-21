@@ -26,13 +26,13 @@ export const register = async (req, res, next) => {
         })
         res.json({
             Message: "Register Successfully",
-            access_token,
             user: {
                 _id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
                 picture: newUser.picture,
-                status: newUser.status
+                status: newUser.status,
+                access_token
             }
         });
     } catch (error) {
@@ -58,13 +58,13 @@ export const login = async (req, res, next) => {
         })
         res.json({
             Message: "Register Successfully",
-            access_token,
             user: {
                 _id: user_data._id,
                 name: user_data.name,
                 email: user_data.email,
                 picture: user_data.picture,
-                status: user_data.status
+                status: user_data.status,
+                access_token
             }
         });
     } catch (error) {
