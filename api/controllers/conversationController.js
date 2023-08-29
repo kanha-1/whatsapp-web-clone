@@ -2,7 +2,7 @@ import createHttpError from "http-errors";
 import logger from "../config/logger.js";
 import { isConversationExists, createConversation, populateConversation, getUserConversation } from "../services/conversationService.js";
 import { findUser } from "../services/userService.js";
-
+// import { createConversation } from "../services/conversationService.js";
 export const create_new_conversation = async (req, res, next) => {
     try {
         const sender_Id = req.user.userId;
