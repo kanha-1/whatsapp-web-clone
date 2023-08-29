@@ -1,6 +1,7 @@
 import createHttpError from "http-errors"
 import ConversationModel from "../models/conversationModel.js"
 import UserModel from "../models/userModel.js"
+
 export const isConversationExists = async (sender_Id, receiver_id) => {
     let chats = ConversationModel.find({
         isGroup: false,
@@ -50,4 +51,13 @@ export const getUserConversation = async (user_id) => {
             throw createHttpError.BadRequest(err)
         })
     return conversation
-}   
+}
+
+export const updateRecentMessages = async (convo_id, message) => {
+    console.log()
+    const updateMessage = await ConversationModel.findByIdAndUpdate(convo_id, {
+        recentMessage: message
+    })
+    if (!updateMessage) throw createHttpError.BadRequest("Something Went wrong !")
+    return updateMessage
+}

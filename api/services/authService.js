@@ -13,8 +13,8 @@ export const createUser = async (userData) => {
     }
 
     // check lenth of name
-    if (!validator.isLength(name, { min: 3, max: 16 })) {
-        throw createHttpError.BadRequest("Please make sure name character is between 3 to 16")
+    if (!validator.isLength(name, { min: 3, max: 60 })) {
+        throw createHttpError.BadRequest("Please make sure name character is between 3 to 60")
     }
 
     // check length of status
