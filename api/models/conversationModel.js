@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { ObjectId } from mongoose.Schema.Types
+const { ObjectId } = mongoose.Schema.Types
 const conversationSchema = mongoose.Schema({
     name: {
-        name: String,
-        required: [true, "COnversation is required"],
+        type: String,
+        required: [true, "Conversation is required"],
         trim: true
     },
     isGroup: {
@@ -11,10 +11,10 @@ const conversationSchema = mongoose.Schema({
         required: true,
         default: false
     },
-    user: [
+    users: [
         {
             type: ObjectId,
-            ref: "userModel"
+            ref: "UserModel"
 
         }
     ],
@@ -24,13 +24,13 @@ const conversationSchema = mongoose.Schema({
     },
     admin: {
         type: ObjectId,
-        ref: "userModel"
+        ref: "UserModel"
     }
 }, {
     collection: "conversation",
-    timeStamps: true
+    timestamps: true
 })
 
 
-const ConversationModel = mongoose.models.conversationModel || mongoose.model("conversationModel", conversationSchema)
+const ConversationModel = mongoose.models.ConversationModel || mongoose.model("ConversationModel", conversationSchema)
 export default ConversationModel

@@ -1,6 +1,6 @@
-import mongose from "mongoose"
-const { ObjectId } = mongose.Schema.Types
-const MessageSchema = mongose.Schema({
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Schema.Types
+const messageSchema = mongoose.Schema({
     sender: {
         type: ObjectId,
         ref: "UserModel"
@@ -19,5 +19,6 @@ const MessageSchema = mongose.Schema({
     timestamps: true
 })
 
-const MessageModel = mongose.models.MessageModel || mongose.Schema("MessageModel", MessageSchema)
-export default MessageModel 
+
+const MessageModel = mongoose.models.MessageModel || mongoose.model("MessageModel", messageSchema)
+export default MessageModel
