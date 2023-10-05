@@ -54,7 +54,6 @@ export const getUserConversation = async (user_id) => {
 }
 
 export const updateRecentMessages = async (convo_id, message) => {
-    console.log()
     const updateMessage = await ConversationModel.findByIdAndUpdate(convo_id, {
         recentMessage: message
     })

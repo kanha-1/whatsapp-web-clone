@@ -5,3 +5,18 @@ export const findUser = async (userId) => {
     if (!user) throw createHttpError.BadRequest("Unable to find the user")
     return user
 }
+
+export const searchUserService = async (keyword, userId) => {
+    const user = await UserModel.find({
+        // name: { $regex: keyword, $options: "i" }
+        $or: [
+            { name: { $regex: keyword, $options: "i" } },
+            { name: { $regex: keyword, $options: "i" } }
+        ]
+    })
+        // console.log(userId, "userId")
+        .find({
+            _id: { $ne: userId }
+        })
+    return user
+}
