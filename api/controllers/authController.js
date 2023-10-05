@@ -32,7 +32,7 @@ export const register = async (req, res, next) => {
                 email: newUser.email,
                 picture: newUser.picture,
                 status: newUser.status,
-                access_token
+                token:access_token
             }
         });
     } catch (error) {
@@ -64,7 +64,7 @@ export const login = async (req, res, next) => {
                 email: user_data.email,
                 picture: user_data.picture,
                 status: user_data.status,
-                access_token
+                token:access_token
             }
         });
     } catch (error) {
@@ -91,13 +91,13 @@ export const refreshToken = async (req, res, next) => {
             { userId: user._id }, "1d", process.env.ACCESS_TOKEN_KEY
         )
         res.json({
-            access_token,
             user: {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 picture: user.picture,
-                status: user.status
+                status: user.status,
+                token:access_token
             }
         });
     } catch (error) {

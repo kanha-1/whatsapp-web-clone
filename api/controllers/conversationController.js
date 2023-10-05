@@ -17,9 +17,10 @@ export const create_new_conversation = async (req, res, next) => {
         if (existed_conversation) {
             res.json(existed_conversation)
         } else {
-            let receiver_user_data = await findUser(receiver_id)
+            // let receiver_user_data = await findUser(receiver_id)
             let conversation_data = {
-                name: receiver_user_data.name,
+                name: "conversation name",
+                picture: "conversation picture",
                 isGroup: false,
                 users: [sender_Id, receiver_id]
             }
