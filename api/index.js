@@ -11,6 +11,10 @@ import logger from "./config/logger.js";
 import createHttpError from "http-errors";
 import router from "./routes/index.js";
 import mongoose from "mongoose";
+import SocketServer from "./SocketServer.js";
+// soket
+import { Server } from "socket.io";
+
 const PORT = process.env.PORT || 8080;
 const app = express();
 dotenv.config();
@@ -54,7 +58,6 @@ if (process.env.NODE_ENV !== "production") {
 
 // config routing
 app.use("/api", router)
-
 app.use(async (req, res, next) => {
     next(createHttpError.NotFound("This Path dosn't exit"))
 })
@@ -76,6 +79,18 @@ let server = app.listen(PORT, () => {
     // throw new Error('error in server')
 })
 
+// socket io server
+const io = new Server(server, {
+    pingTimeout: 60000,
+    cors: {
+        origin: process.env.CLIENT_URL
+    }
+})
+
+io.on("connection", (socket) => {
+    logger.info("socket io connected successfully")
+    SocketServer(socket, io)
+})
 // Handel server errors
 const existHandler = () => {
     if (server) {

@@ -31,7 +31,6 @@ export const getMessages = async (req, res, next) => {
             return res.sendStatus(400)
         }
         const messages = await getUserConversationMessages(convo_id)
-        console.log(messages, "messages in controler")
         res.json(messages)
     } catch (error) {
         next(error)
