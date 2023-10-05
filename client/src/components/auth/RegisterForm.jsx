@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { PulseLoader } from "react-spinners"
 import { Link, useNavigate } from "react-router-dom"
 import InputFields from './InputFields';
-import { registerUser } from '../../features/userSlice';
+import { changeStatus, registerUser } from '../../features/userSlice';
 import UserPicture from './UserPicture';
+import axios from 'axios';
+
 function RegisterForm() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -18,12 +20,27 @@ function RegisterForm() {
         resolver: yupResolver(signupSchema),
     });
     const onSubmit = async (data) => {
-        const response = await dispatch(registerUser({ ...data, picture: "" }))
-        if (response.payload.user) {
+        dispatch(changeStatus('loading'))
+        let response;
+        if (picture) {
+            await uploadPicture().then(async (url) => {
+                response = await dispatch(registerUser({ ...data, picture: url.secure_url }))
+            })
+        } else {
+            response = await dispatch(registerUser({ ...data, picture: "" }))
+        }
+        if (response?.payload?.user) {
             navigate('/')
         }
+
     };
-    console.log(picture, imagePreview)
+    const uploadPicture = async () => {
+        let formData = new FormData()
+        formData.append("upload_preset", "whatapp-web")
+        formData.append("file", picture)
+        const { data } = await axios.post(`https://api.cloudinary.com/v1_1/dsseuwzzr/image/upload`, formData)
+        return data
+    }
     return (
         <div className='min-h-screen w-full flex items-center justify-center overflow-hidden'>
             <div className="w-full max-w-md space-y-8 p-10 dark:bg-dark_bg_2 rounded-xl">
@@ -77,7 +94,7 @@ function RegisterForm() {
                 </form>
                 <p className="flex flex-row items-center justify-center mt-10 text-center text-md dark:text-dark_text_1">
                     <span>Registered user ? </span>
-                    <Link href="/login" className='hover:underline ml-2 font-semibold transition ease-in duration-300'> LogIn</Link>
+                    <Link to="/login" className='hover:underline ml-2 font-semibold transition ease-in duration-300'> LogIn</Link>
                 </p>
             </div>
         </div>

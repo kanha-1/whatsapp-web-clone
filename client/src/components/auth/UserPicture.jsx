@@ -4,7 +4,6 @@ function UserPicture({ setImagePreview, imagePreview, setPicture }) {
     const [err, setErr] = useState('')
     const handelPictureUpload = (e) => {
         let pic = e.target.files[0]
-        console.log(pic)
         if (pic.type !== "image/png" && pic.type !== "image/jpeg" && pic.type !== "image/webp") {
             setErr(`${pic.name} file is not suppoted , use only jpeg, webp or png`)
             return
@@ -21,6 +20,7 @@ function UserPicture({ setImagePreview, imagePreview, setPicture }) {
             }
         }
     }
+
     const handelPictureChange = () => {
         setImagePreview('')
         setPicture('')
@@ -32,7 +32,7 @@ function UserPicture({ setImagePreview, imagePreview, setPicture }) {
             </label>
             {imagePreview ?
                 <div className='flex justify-center'>
-                    <img src={imagePreview} alt="profile picture"
+                    <img src={imagePreview} alt="profile user"
                         className='w-20 h-20 object-cover rounded-full' />
                     <div onClick={() => handelPictureChange()}
                         className='ml-2 mt-5 w-20 h-10 dark:bg-dark_bg_3 rounded-md text-sm flex items-center justify-center cursor-pointer'>
