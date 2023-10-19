@@ -4,6 +4,7 @@ import { Sidebar } from '../components/Sidebar'
 import { getConversation, updateMessagesNconversation } from '../features/chatSlice'
 import { MainWelcome, ChatsContainer } from '../components/Chats'
 import SocketContext from '../context/SocketContext'
+import VideoCallMain from '../components/Chats/VideoCall/VideoCallMain'
 
 function Home({ socket }) {
 
@@ -14,7 +15,7 @@ function Home({ socket }) {
   const { activeConversation } = useSelector((state) => state.chat)
 
   // join user into socket io
- 
+
   useEffect(() => {
     if (user?.token) {
       dispatch(getConversation(user.token))
@@ -37,12 +38,17 @@ function Home({ socket }) {
   }, [])
 
   return (
-    <div className='h-screen dark:bg-dark_bg_1 flex items-center justfy-center  overflow-hidden'>
-      <div className="container h-screen flex">
-        <Sidebar onlineUsers={onlineUsers} />
-        {activeConversation._id ? <ChatsContainer onlineUsers={onlineUsers} typing={typing} /> : <MainWelcome />}
+    <>
+      <div className='h-screen dark:bg-dark_bg_1 flex items-center justfy-center  overflow-hidden'>
+        <div className="container h-screen flex">
+          <Sidebar onlineUsers={onlineUsers} />
+          {activeConversation._id ? <ChatsContainer onlineUsers={onlineUsers} typing={typing} /> : <MainWelcome />}
+        </div>
       </div>
-    </div>
+
+      {/* video call */}
+      <VideoCallMain />
+    </>
   )
 }
 
