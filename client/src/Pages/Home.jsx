@@ -47,7 +47,7 @@ function Home({ socket }) {
       </div>
 
       {/* video call */}
-      <VideoCallMain />
+      {/* <VideoCallMain /> */}
     </>
   )
 }

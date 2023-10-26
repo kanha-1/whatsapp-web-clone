@@ -12,6 +12,7 @@ import createHttpError from "http-errors";
 import router from "./routes/index.js";
 import mongoose from "mongoose";
 import SocketServer from "./SocketServer.js";
+import path from "path"
 // soket
 import { Server } from "socket.io";
 
@@ -78,6 +79,19 @@ let server = app.listen(PORT, () => {
     logger.info(`application running on port ${PORT}`)
     // throw new Error('error in server')
 })
+// deployment
+const __dirname1 = path.resolve()
+if (process.env.NODE_ENV == "production") {
+	app.use(express.static(path.join(__dirname1, "client/build")));
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"));
+	});
+} else {
+	app.get('/', (req, res) => {
+		console.log(process.env.NODE_ENV, "process.env.NODE_ENV")
+		res.send('app is running on development')
+	})
+}
 
 // socket io server
 const io = new Server(server, {
