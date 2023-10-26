@@ -38,6 +38,7 @@ mongoose.connection.on("error", (err) => {
     logger.error(`mongoDb connection Error :${err}`)
     process.exit(1)
 })
+
 // debug mongodb
 if (process.env.NODE_ENV !== "production") {
     mongoose.set("debug", true)
@@ -52,16 +53,16 @@ app.use(ExpressMongoSanitize()) //to add more security to db query request
 app.use(cookieParser())
 app.use(compression())
 app.use(fileUpload({ useTempFiles: true }))
+
 if (process.env.NODE_ENV !== "production") {
     app.use(morgan('dev'))
 }
 
-
 // config routing
 app.use("/api", router)
-app.use(async (req, res, next) => {
-    next(createHttpError.NotFound("This Path dosn't exit"))
-})
+// app.use(async (req, res, next) => {
+//     next(createHttpError.NotFound("This Path dosn't exit"))
+// })
 
 
 // error handling
@@ -75,23 +76,25 @@ app.use(async (err, req, res, next) => {
     })
 })
 
+// deployment
+const __dirname1 = path.resolve()
+if (process.env.NODE_ENV == "production") {
+    app.use(express.static(path.join(__dirname1, "client/build")));
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"));
+    });
+} else {
+    app.get('/', (req, res) => {
+        console.log(process.env.NODE_ENV, "process.env.NODE_ENV")
+        res.send('app is running on development')
+    })
+}
+
 let server = app.listen(PORT, () => {
     logger.info(`application running on port ${PORT}`)
     // throw new Error('error in server')
 })
-// deployment
-const __dirname1 = path.resolve()
-if (process.env.NODE_ENV == "production") {
-	app.use(express.static(path.join(__dirname1, "client/build")));
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"));
-	});
-} else {
-	app.get('/', (req, res) => {
-		console.log(process.env.NODE_ENV, "process.env.NODE_ENV")
-		res.send('app is running on development')
-	})
-}
+
 
 // socket io server
 const io = new Server(server, {
